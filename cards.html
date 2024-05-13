@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html>
+<style>
+.mydiv {
+  position: absolute;
+  z-index: 9;
+  width:200px;
+  background-color: #f1f1f1;
+  text-align: center;
+  border: 1px solid #d3d3d3;
+}
+
+.mydivheader {
+  padding: 5px;
+  z-index: 10;
+  cursor: move;
+  background-color: #2196F3;
+  color: #fff;
+}
+.mydivheader2 {
+  padding: 5px;
+  cursor: move;
+  background-color: #008A5F;
+  color: #fff;
+}
+.mydivheader3 {
+  padding: 5px;
+  cursor: move;
+  background-color: #8F5FA9;
+  color: #fff;
+}
+.cover {width:200px}
+</style>
+<body>
+
+<h1>Рухомі картки</h1>
+<!-- щоб додати групу - створюємо кнопку button і копіюємо div, де треба вказати клас, id / dragElement(document.getElementById("mydiv"));function group3()-->
+<p>Клацніть та переміщуйте мишкою картки. До кожної картки можна додати невеликий коментар</p>
+<p><button id="capture-screenshot">Клацніть тут, щоб зробити скріншот</button> Ви можете завантажити його для подальшого використання </p>
+<p><button onclick="group1()" class="mydivheader">Група 1</button>
+<button onclick="group2()" class="mydivheader2">Група 2</button>
+<button onclick="group3()" class="mydivheader3">Група 3</button></p>
+<div class="group1" id="group1" style="display:none">
+	<div id="mydiv" class="mydiv">
+	  <div id="mydivheader" class="mydivheader">🔀 <span onclick="myFunc('c11')">🔁</span></div>
+	  <img src="c11.jpg" id="c11" class="cover" onclick="myFunc(this.id)">
+	  <br><input type="text" id="tc11">
+	</div>
+
+	<div id="mydiv2" class="mydiv">
+	  <div id="mydiv2header" class="mydivheader">🔀 <span onclick="myFunc('c12')">🔁</span></div>
+	  <img src="c12.jpg" id="c12" class="cover" onclick="myFunc(this.id)">
+	  <br><input type="text" id="tc12">
+	</div>
+</div>
+
+
+<div class="group2" id="group2" style="display:none">
+	<div id="mydiv3" class="mydiv">
+	  <div id="mydiv3header" class="mydivheader2">🔀 <span onclick="myFunc('c23')">🔁</span></div>
+	  <img src="c23.jpg" id="c23" class="cover" onclick="myFunc(this.id)">
+	  <br><input type="text" id="tc23">
+	</div>
+
+	<div id="mydiv4" class="mydiv">
+	  <div id="mydiv4header" class="mydivheader2">🔀 <span onclick="myFunc('c24')">🔁</span></div>
+	  <img src="c24.jpg" id="c24" class="cover" onclick="myFunc(this.id)">
+	  <br><input type="text" id="tc24">
+	</div>
+</div>
+
+
+<div class="group3" id="group3" style="display:none">
+	<div id="mydiv5" class="mydiv">
+	  <div id="mydiv5header" class="mydivheader3">🔀 <span onclick="myFunc('c31')">🔁</span></div>
+	  <img src="c31.jpg" id="c31" class="cover" onclick="myFunc(this.id)">
+	  <br><input type="text" id="tc31">
+	</div>
+
+	<div id="mydiv6" class="mydiv">
+	  <div id="mydiv6header" class="mydivheader3">🔀 <span onclick="myFunc('c32')">🔁</span></div>
+	  <img src="c32.jpg" id="c32" class="cover" onclick="myFunc(this.id)">
+	  <br><input type="text" id="tc32">
+	</div>
+</div>
+<script>
+function group1(){
+if (document.getElementById("group1").style.display=="") {document.getElementById("group1").style.display="none";} else 
+{document.getElementById("group1").style.display="";}
+}
+function group2(){
+if (document.getElementById("group2").style.display=="") {document.getElementById("group2").style.display="none"} else 
+{document.getElementById("group2").style.display="";}
+}
+function group3(){
+if (document.getElementById("group3").style.display=="") {document.getElementById("group3").style.display="none"} else 
+{document.getElementById("group3").style.display="";}
+}
+var b1 = 0;
+function myFunc(a){
+	var cover=a+".jpg";
+	var expl="e"+a[1]+a[2]+".jpg";
+	if (b1==0) 
+	{ document.getElementById(a).src=cover; b1=1}
+	else {document.getElementById(a).src=expl; b1=0}
+}
+
+//Make the DIV element draggagle:
+dragElement(document.getElementById("mydiv"));
+dragElement(document.getElementById("mydiv2"));
+dragElement(document.getElementById("mydiv3"));
+dragElement(document.getElementById("mydiv4"));
+dragElement(document.getElementById("mydiv5"));
+dragElement(document.getElementById("mydiv6"));
+
+function dragElement(elmnt) {
+  var pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
+  if (document.getElementById(elmnt.id + "header")) {
+    /* if present, the header is where you move the DIV from:*/
+    document.getElementById(elmnt.id + "header").onmousedown = dragMouseDown;
+  } else {
+    /* otherwise, move the DIV from anywhere inside the DIV:*/
+    elmnt.onmousedown = dragMouseDown;
+  }
+
+  function dragMouseDown(e) {
+    e = e || window.event;
+    e.preventDefault();
+    // get the mouse cursor position at startup:
+    pos3 = e.clientX;
+    pos4 = e.clientY;
+    document.onmouseup = closeDragElement;
+    // call a function whenever the cursor moves:
+    document.onmousemove = elementDrag;
+  }
+
+  function elementDrag(e) {
+    e = e || window.event;
+    e.preventDefault();
+    // calculate the new cursor position:
+    pos1 = pos3 - e.clientX;
+    pos2 = pos4 - e.clientY;
+    pos3 = e.clientX;
+    pos4 = e.clientY;
+    // set the element's new position:
+    elmnt.style.top = (elmnt.offsetTop - pos2) + "px";
+    elmnt.style.left = (elmnt.offsetLeft - pos1) + "px";
+  }
+
+  function closeDragElement() {
+    /* stop moving when mouse button is released:*/
+    document.onmouseup = null;
+    document.onmousemove = null;
+  }
+}
+</script>
+    <script
+    src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script type="text/javascript"
+    src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+    <script type="text/javascript">  
+        $('#capture-screenshot').click(function() {
+            const screenshotTarget = document.body;
+            html2canvas(screenshotTarget).then(canvas => {
+            	// to image as png use below line
+                // const base64image = canvas.toDataURL("image/png");
+            	// show the image in window use below line
+                // window.location.href = base64image;
+            	
+            	// screenshot appended to the body as canvas
+                document.body.appendChild(canvas);  
+                dataURL = canvas.toDataURL();  
+                // to print the screenshot in console use below line
+                // console.log(dataURL);
+                
+                // following line is optional and it is to save the screenshot
+                // on the server side. It initiates an ajax call
+                pushScreenshotToServer(dataURL); 
+            });  
+        });
+  
+        function pushScreenshotToServer(dataURL) {  
+            $.ajax({ 
+                url: "push-screenshot.php",  
+                type: "POST",  
+                data: {  
+                    image: dataURL  
+                },  
+                dataType: "html", 
+                success: function() {  
+                	console.log('Screenshot pushed to server.');
+                }  
+            });  
+        }  
+    </script>
+</body>
+</html>
